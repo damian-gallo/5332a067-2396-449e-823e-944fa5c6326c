@@ -1,21 +1,14 @@
-import express from 'express';
-import { PORT } from './config';
-import { GetTheLatestCurrencies } from './utils';
+import express from "express";
+import logger from "./core/logger";
+import { PORT } from "./config";
+import { initializeRoutes } from "./startup/routes";
 
-// Create express server
 const app: any = express();
 
-app.get("/ping", (req: any, res: any) => {
-  res.send('pong');
-});
-
-app.get("/criptos", async (req: any, res: any) => {
-  const currencies = await GetTheLatestCurrencies();
-  res.json({ total: currencies.length, currencies });
-});
+initializeRoutes(app);
 
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  logger.info(`Server listening in port ${PORT}...`);
 });
 
 export default app;
